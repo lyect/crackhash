@@ -1,0 +1,77 @@
+version: '3.3'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3.10.7-management
+    hostname: rabbitmq
+    restart: always
+    ports:
+      - 5672:5672
+      - 15672:15672
+    networks:
+      - mongors-network
+
+  mongors1:
+    image: mongo:latest
+    hostname: mongors1
+    ports:
+      - "27017:27017"
+    volumes:
+      - type: bind
+        source: ./test/mongors/data1
+        target: /data/db
+      - type: bind
+        source: ./test/mongors/config1
+        target: /data/configdb
+    command: mongod --replSet "rs0" --bind_ip 0.0.0.0 --port 27017
+    networks:
+      - mongors-network
+
+  mongors2:
+    image: mongo:latest
+    hostname: mongors2
+    ports:
+      - "27018:27018"
+    volumes:
+      - type: bind
+        source: ./test/mongors/data2
+        target: /data/db
+      - type: bind
+        source: ./test/mongors/config2
+        target: /data/configdb
+    command: mongod --replSet "rs0" --bind_ip 0.0.0.0 --port 27018
+    networks:
+      - mongors-network
+
+  mongors3:
+    image: mongo:latest
+    hostname: mongors3
+    ports:
+      - "27019:27019"
+    volumes:
+      - type: bind
+        source: ./test/mongors/data3
+        target: /data/db
+      - type: bind
+        source: ./test/mongors/config3
+        target: /data/configdb
+    command: mongod --replSet "rs0" --bind_ip 0.0.0.0 --port 27019
+    networks:
+      - mongors-network
+
+  mongors-setup:
+    image: mongo:latest
+    hostname: mongors-setup
+    depends_on:
+      - mongors1
+      - mongors2
+      - mongors3
+    restart: "no"
+    command:
+      bash -c "mongosh --host mongors1:27017 --eval 'rs.initiate({_id:\"rs0\",members:[{_id:0,host:\"mongors1:27017\"},{_id:1,host:\"mongors2:27018\"},{_id:2,host:\"mongors3:27019\"}]})'"
+    networks:
+      - mongors-network
+      
+networks:
+  mongors-network:
+    driver: bridge

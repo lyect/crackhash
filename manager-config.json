@@ -1,0 +1,55 @@
+{
+    "logger": {
+        "name": "ManagerLogger",
+        "queue_size": 8192,
+        "n_threads": 1, 
+        "std_logger": {
+            "level": "info"
+        },
+        "file_logger": {
+            "path": "manager.log",
+            "truncate": true,
+            "level": "info"
+        }
+    },
+    "incoming_http_connection": {
+        "ip_address": "0.0.0.0",
+        "ip_port": 80,
+        "read_buffer_size": 8192,
+        "timeout": 10
+    },
+    "message_broker": {
+        "hostname": "rabbitmq",
+        "port": 5672,
+        "user": "guest",
+        "password": "guest",
+        "to_workers_queue":          "to_workers_q",
+        "to_workers_routing_key":    "to_workers_rk",
+        "to_workers_exchange_point": "to_workers_ep",
+        "from_workers_queue":          "from_workers_q",
+        "from_workers_routing_key":    "from_workers_rk",
+        "from_workers_exchange_point": "from_workers_ep",
+        "publish_interval": 3,
+        "consume_interval": 3
+    },
+    "crack_hash_request_database": {
+        "db_uri": "mongodb://mongors1:27017,mongors2:27018,mongors3:27019/?replicaSet=rs0",
+        "db_name": "crack_hash_requests",
+        "crack_hash_sub_requests_collection": "crack_hash_sub_requests",
+        "crack_hash_request_uuid_field_name": "request_uuid",
+        "crack_hash_sub_request_uuid_field_name": "sub_request_uuid",
+        "crack_hash_request_hash_field_name": "hash",
+        "crack_hash_request_max_length_field_name": "max_length",
+        "crack_hash_request_alphabet_field_name": "alphabet",
+        "crack_hash_request_from_field_name": "from",
+        "crack_hash_request_to_field_name": "to",
+        "crack_hash_request_result_field_name": "result",
+        "crack_hash_request_status_field_name": "status"
+    },
+    "start_delay": 1,
+    "n_threads": 4,
+    "max_length": 5,
+    "alphabet": "abcdefghijklmnopqrstuvwxyz",
+    "crack_hash_request_timeout": 120,
+    "split_into": 4
+}

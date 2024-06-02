@@ -1,0 +1,32 @@
+{
+    "logger": {
+        "name": "WorkerLogger",
+        "queue_size": 8192,
+        "n_threads": 1, 
+        "std_logger": {
+            "level": "info"
+        },
+        "file_logger": {
+            "path": "worker.log",
+            "truncate": true,
+            "level": "info"
+        }
+    },
+    "message_broker": {
+        "hostname": "rabbitmq",
+        "port": 5672,
+        "user": "guest",
+        "password": "guest",
+        "to_workers_queue":          "to_workers_q",
+        "to_workers_routing_key":    "to_workers_rk",
+        "to_workers_exchange_point": "to_workers_ep",
+        "from_workers_queue":          "from_workers_q",
+        "from_workers_routing_key":    "from_workers_rk",
+        "from_workers_exchange_point": "from_workers_ep",
+        "publish_interval": 3,
+        "consume_interval": 3
+    },
+    "start_delay": 1,
+    "n_threads": 4,
+    "burst": 50
+}
